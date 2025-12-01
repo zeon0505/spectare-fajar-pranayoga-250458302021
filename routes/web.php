@@ -23,6 +23,9 @@ use App\Livewire\Admin\Transactions\Detail as AdminTransactionsDetail;
 use App\Livewire\Admin\Transactions\Index as AdminTransactionsIndex;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
+use App\Livewire\Auth\ForgotPassword;
+use App\Livewire\Auth\ResetPassword;
+use App\Livewire\TermsAndConditions;
 use App\Livewire\Features\Settings;
 use App\Livewire\Home;
 use App\Livewire\User\Bookings\Create as UserBookingsCreate;
@@ -93,12 +96,15 @@ Route::get('/', function () {
 Route::get('/films', UserFilmsIndex::class)->name('films.index');
 Route::get('/films/{film}', UserFilmsShow::class)->name('films.show');
 Route::get('/snacks', UserSnacksIndex::class)->name('snacks.index');
+Route::get('/terms', TermsAndConditions::class)->name('terms');
 
 //
 // ─── AUTH ROUTES ────────────────────────────────────────────────────────────
 //
 Route::get('login', Login::class)->name('login');
 Route::get('register', Register::class)->name('register');
+Route::get('forgot-password', ForgotPassword::class)->name('password.request');
+Route::get('reset-password/{token}', ResetPassword::class)->name('password.reset');
 
 Route::post('logout', function () {
     Auth::logout();

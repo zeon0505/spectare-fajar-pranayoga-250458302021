@@ -45,7 +45,7 @@
         <!-- Terms Checkbox -->
         <div class="checkbox-group">
             <input type="checkbox" id="terms" required>
-            <label for="terms">Saya setuju dengan <a href="#">Syarat & Ketentuan</a></label>
+            <label for="terms">Saya setuju dengan <a href="{{ route('terms') }}" target="_blank">Syarat & Ketentuan</a></label>
         </div>
 
         <!-- Submit Button -->
