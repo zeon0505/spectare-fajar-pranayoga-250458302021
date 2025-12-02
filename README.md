@@ -1,61 +1,375 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🎬 CinemaSpectare
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem Manajemen Bioskop Modern berbasis Laravel dengan Livewire
 
-## About Laravel
+## 📖 Deskripsi Singkat
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**CinemaSpectare** adalah aplikasi web terintegrasi untuk manajemen bioskop yang menyediakan sistem pemesanan tiket online, manajemen film, penjadwalan pertunjukan, dan pembelian snack. Aplikasi ini dibangun dengan teknologi modern menggunakan Laravel 12 dan Livewire 3, menawarkan pengalaman pengguna yang responsif dan interaktif.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Aplikasi ini dirancang untuk dua jenis pengguna:
+- **Admin**: Mengelola film, jadwal tayang, studio, transaksi, pengguna, dan pengaturan sistem
+- **User**: Memesan tiket, memilih kursi, membeli snack, dan mengelola profil booking
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ✨ Fitur Utama
 
-## Learning Laravel
+### 🔐 Autentikasi & Otorisasi
+- ✅ Registrasi dan login pengguna
+- ✅ Sistem role-based (Admin & User)
+- ✅ Lupa password dengan reset email
+- ✅ Manajemen profil pengguna
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### 👨‍💼 Panel Admin
+- 📊 **Dashboard**: Statistik dan overview sistem
+- 🎬 **Manajemen Film**: CRUD film dengan detail lengkap (genre, durasi, rating, poster, dll)
+- 🏢 **Manajemen Studio**: Kelola studio bioskop dengan konfigurasi kursi
+- 📅 **Penjadwalan Showtime**: Atur jadwal tayang film di berbagai studio
+- 🍿 **Manajemen Snack**: Kelola produk makanan dan minuman
+- 💳 **Transaksi**: Monitor dan kelola semua transaksi
+- 📋 **Booking**: Lihat detail pemesanan tiket
+- 👥 **Manajemen User**: Kelola pengguna dan blokir akun bermasalah
+- ⚙️ **Site Settings**: Konfigurasi hero background, featured films
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 👤 Fitur Pengguna
+- 🎭 **Katalog Film**: Browse film yang sedang/akan tayang dengan filter genre
+- 🔍 **Pencarian Film**: Cari film berdasarkan judul
+- 📺 **Jadwal Showtime**: Lihat jadwal tayang tersedia
+- 🪑 **Pemilihan Kursi**: Sistem seat selection interaktif real-time
+- 🍿 **Pembelian Snack**: Tambah snack ke booking
+- 💰 **Pembayaran**: Integrasi payment gateway Midtrans
+- 🎟️ **E-Ticket**: Generate QR code untuk tiket
+- 📱 **Riwayat Booking**: Lihat semua booking yang pernah dilakukan
+- ❤️ **Wishlist**: Simpan film favorit
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 🔔 Fitur Tambahan
+- 📧 **Notifikasi Email**: Konfirmasi booking dan reset password
+- 🎨 **UI/UX Modern**: Desain responsif dengan Tailwind CSS 4
+- 🔔 **Real-time Alerts**: Notifikasi interaktif dengan Livewire Alert
+- 📊 **Charts & Analytics**: Visualisasi data dengan ApexCharts
+- 🔒 **Keamanan**: Laravel Sanctum untuk API authentication
 
-## Laravel Sponsors
+## 🛠️ Teknologi yang Digunakan
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Backend
+- **[Laravel 12](https://laravel.com)** - PHP Framework terkini
+- **[Livewire 3.6](https://livewire.laravel.com)** - Full-stack framework untuk Laravel
+- **[Laravel Sanctum](https://laravel.com/docs/sanctum)** - API authentication
+- **PHP 8.2+** - Bahasa pemrograman
 
-### Premium Partners
+### Frontend
+- **[Tailwind CSS 4](https://tailwindcss.com)** - Utility-first CSS framework
+- **[Vite 7](https://vitejs.dev)** - Build tool modern
+- **[Alpine.js](https://alpinejs.dev)** (via Livewire) - JavaScript framework minimal
+- **[ApexCharts](https://apexcharts.com)** - Library charting interaktif
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### Payment Gateway
+- **[Midtrans](https://midtrans.com)** - Payment gateway Indonesia
 
-## Contributing
+### Additional Libraries
+- **[Livewire Alert](https://github.com/jantinnerezo/livewire-alert)** - SweetAlert2 untuk Livewire
+- **[Simple QR Code](https://github.com/SimpleSoftwareIO/simple-qrcode)** - Generator QR code untuk e-ticket
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### Database
+- **SQLite** (Default untuk development)
+- Support MySQL, PostgreSQL, SQL Server
 
-## Code of Conduct
+### Development Tools
+- **[Laravel Pint](https://laravel.com/docs/pint)** - Code style fixer
+- **[Pest PHP](https://pestphp.com)** - Testing framework
+- **[Laravel Pail](https://laravel.com/docs/pail)** - Log viewer
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 📋 Prasyarat
 
-## Security Vulnerabilities
+Sebelum menginstal aplikasi, pastikan sistem Anda memiliki:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- **PHP >= 8.2** dengan ekstensi:
+  - Ctype
+  - cURL
+  - DOM
+  - Fileinfo
+  - Filter
+  - Hash
+  - Mbstring
+  - OpenSSL
+  - PCRE
+  - PDO
+  - Session
+  - Tokenizer
+  - XML
+- **Composer** (Dependency Manager untuk PHP)
+- **Node.js >= 18** dan **npm** (Untuk asset compilation)
+- **SQLite** atau database lain (MySQL, PostgreSQL)
 
-## License
+## 🚀 Cara Instalasi
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/zeon0505/spectare.git
+cd cinemaspectare
+```
+
+### 2. Install Dependencies PHP
+
+```bash
+composer install
+```
+
+### 3. Install Dependencies JavaScript
+
+```bash
+npm install
+```
+
+### 4. Konfigurasi Environment
+
+```bash
+# Salin file .env.example menjadi .env
+copy .env.example .env
+```
+
+Edit file `.env` dan sesuaikan konfigurasi:
+
+```env
+APP_NAME="CinemaSpectare"
+APP_URL=http://localhost:8000
+
+# Database (Default SQLite)
+DB_CONNECTION=sqlite
+
+# Untuk MySQL/PostgreSQL, uncomment dan sesuaikan:
+# DB_CONNECTION=mysql
+# DB_HOST=127.0.0.1
+# DB_PORT=3306
+# DB_DATABASE=cinemaspectare
+# DB_USERNAME=root
+# DB_PASSWORD=
+
+# Midtrans Configuration
+MIDTRANS_SERVER_KEY=your_server_key
+MIDTRANS_CLIENT_KEY=your_client_key
+MIDTRANS_IS_PRODUCTION=false
+
+# Email Configuration (Opsional untuk forgot password)
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=your_email@gmail.com
+MAIL_PASSWORD=your_app_password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=your_email@gmail.com
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+### 5. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+### 6. Buat Database SQLite (jika menggunakan SQLite)
+
+```bash
+# Buat folder database jika belum ada
+mkdir database
+
+# Buat file database.sqlite
+type nul > database\database.sqlite
+```
+
+### 7. Jalankan Migrasi Database
+
+```bash
+php artisan migrate
+```
+
+### 8. Seed Data Awal (Opsional)
+
+```bash
+php artisan db:seed
+```
+
+### 9. Buat Storage Link
+
+```bash
+php artisan storage:link
+```
+
+### 10. Build Assets
+
+```bash
+npm run build
+```
+
+## ▶️ Cara Menjalankan Project
+
+### Development Mode (Recommended)
+
+Jalankan semua service sekaligus (server, queue, logs, vite):
+
+```bash
+composer run dev
+```
+
+Command ini akan menjalankan:
+- 🌐 Laravel development server (http://localhost:8000)
+- 📬 Queue worker untuk background jobs
+- 📝 Log viewer (Pail)
+- ⚡ Vite development server untuk hot reload
+
+### Atau Jalankan Manual Satu Per Satu
+
+#### 1. Jalankan Development Server
+
+```bash
+php artisan serve
+```
+
+Aplikasi akan berjalan di: **http://localhost:8000**
+
+#### 2. Jalankan Vite Dev Server (untuk hot reload CSS/JS)
+
+Di terminal baru:
+
+```bash
+npm run dev
+```
+
+#### 3. Jalankan Queue Worker (untuk background jobs)
+
+Di terminal baru:
+
+```bash
+php artisan queue:work
+```
+
+#### 4. Monitor Logs (Opsional)
+
+Di terminal baru:
+
+```bash
+php artisan pail
+```
+
+### Production Mode
+
+```bash
+# Build production assets
+npm run build
+
+# Optimize Laravel
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# Jalankan dengan web server (Apache/Nginx)
+```
+
+## 👥 Akun Default
+
+Setelah seeding, Anda dapat login dengan:
+
+**Admin:**
+- Email: admin@example.com
+- Password: password
+
+**User:**
+- Email: user@example.com
+- Password: password
+
+## 📁 Struktur Project
+
+```
+cinemaspectare/
+├── app/
+│   ├── Livewire/           # Livewire components
+│   │   ├── Admin/          # Admin components
+│   │   ├── User/           # User components
+│   │   └── Auth/           # Authentication components
+│   ├── Models/             # Eloquent models
+│   ├── Services/           # Business logic (PaymentService, dll)
+│   └── Http/
+│       └── Middleware/     # Custom middleware (RoleMiddleware)
+├── database/
+│   ├── migrations/         # Database migrations
+│   ├── seeders/            # Database seeders
+│   └── factories/          # Model factories
+├── resources/
+│   ├── views/
+│   │   ├── livewire/       # Livewire blade templates
+│   │   └── components/     # Reusable blade components
+│   ├── css/                # Stylesheets
+│   └── js/                 # JavaScript files
+├── routes/
+│   └── web.php             # Web routes
+├── public/                 # Public assets
+└── storage/                # Uploaded files, logs, cache
+```
+
+## 🧪 Testing
+
+Jalankan automated tests:
+
+```bash
+composer test
+```
+
+Atau:
+
+```bash
+php artisan test
+```
+
+## 🔧 Troubleshooting
+
+### Error: "No application encryption key has been specified"
+```bash
+php artisan key:generate
+```
+
+### Error: "Class not found"
+```bash
+composer dump-autoload
+```
+
+### Error: Vite manifest not found
+```bash
+npm run build
+```
+
+### Permission denied pada Windows
+Jalankan terminal sebagai Administrator
+
+### Queue jobs tidak berjalan
+Pastikan queue worker aktif:
+```bash
+php artisan queue:work
+```
+
+## 📝 Catatan Pengembangan
+
+- Database menggunakan **SQLite** secara default untuk kemudahan development
+- Payment menggunakan **Midtrans Sandbox** mode untuk testing
+- Untuk production, ubah konfigurasi database dan payment di `.env`
+- Pastikan `queue:work` selalu berjalan untuk proses payment callback
+
+## 📄 Lisensi
+
+Aplikasi ini dibangun dengan [Laravel](https://laravel.com) yang merupakan open-source software berlisensi [MIT](https://opensource.org/licenses/MIT).
+
+## 👤 Author
+
+**Zeon0505**
+- GitHub: [@zeon0505](https://github.com/zeon0505)
+- Repository: [spectare](https://github.com/zeon0505/spectare)
+
+## 🙏 Acknowledgments
+
+- [Laravel](https://laravel.com) - The PHP Framework
+- [Livewire](https://livewire.laravel.com) - Full-stack framework
+- [Tailwind CSS](https://tailwindcss.com) - CSS Framework
+- [Midtrans](https://midtrans.com) - Payment Gateway
+- All open-source contributors
+
+---
+
+**Dibuat dengan ❤️ menggunakan Laravel & Livewire**
