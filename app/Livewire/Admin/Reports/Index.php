@@ -18,6 +18,7 @@ class Index extends Component
     public $startDate;
     public $endDate;
     public $selectedFilm = '';
+    public $reportType = 'tickets'; // tickets or snacks
 
     public function mount()
     {
@@ -27,33 +28,93 @@ class Index extends Component
 
     public function render()
     {
-        $transactions = Transaction::query()
-            ->with(['user', 'booking.showtime.film', 'booking.showtime.studio'])
-            ->where('status', 'success')
-            ->when($this->startDate, function ($query) {
-                $query->whereDate('created_at', '>=', $this->startDate);
-            })
-            ->when($this->endDate, function ($query) {
-                $query->whereDate('created_at', '<=', $this->endDate);
-            })
-            ->when($this->selectedFilm, function ($query) {
-                $query->whereHas('booking.showtime.film', function ($q) {
-                    $q->where('id', $this->selectedFilm);
-                });
-            })
-            ->latest()
-            ->paginate(10);
+        if ($this->reportType === 'tickets') {
+            $transactions = Transaction::query()
+                ->with(['user', 'booking.showtime.film', 'booking.showtime.studio'])
+                ->where('status', 'success')
+                ->when($this->startDate, function ($query) {
+                    $query->whereDate('created_at', '>=', $this->startDate);
+                })
+                ->when($this->endDate, function ($query) {
+                    $query->whereDate('created_at', '<=', $this->endDate);
+                })
+                ->when($this->selectedFilm, function ($query) {
+                    $query->whereHas('booking.showtime.film', function ($q) {
+                        $q->where('id', $this->selectedFilm);
+                    });
+                })
+                ->latest()
+                ->paginate(10);
 
-        return view('livewire.admin.reports.index', [
-            'transactions' => $transactions,
-            'films' => Film::all(),
-            'totalRevenue' => $this->calculateTotalRevenue(),
-        ]);
+            return view('livewire.admin.reports.index', [
+                'transactions' => $transactions,
+                'films' => Film::all(),
+                'totalRevenue' => $this->calculateTotalRevenue(),
+                'totalCombinedRevenue' => $this->calculateTotalCombinedRevenue(),
+                'snackOrders' => collect(),
+            ]);
+        } else {
+            $snackOrders = \App\Models\SnackOrderItem::query()
+                ->with(['snackOrder.user', 'snack'])
+                ->when($this->startDate, function ($query) {
+                    $query->whereHas('snackOrder', function($q) {
+                        $q->whereDate('created_at', '>=', $this->startDate);
+                    });
+                })
+                ->when($this->endDate, function ($query) {
+                    $query->whereHas('snackOrder', function($q) {
+                        $q->whereDate('created_at', '<=', $this->endDate);
+                    });
+                })
+                ->latest()
+                ->paginate(10);
+
+            return view('livewire.admin.reports.index', [
+                'transactions' => collect(),
+                'films' => Film::all(),
+                'totalRevenue' => $this->calculateTotalRevenue(),
+                'totalCombinedRevenue' => $this->calculateTotalCombinedRevenue(),
+                'snackOrders' => $snackOrders,
+            ]);
+        }
     }
 
     public function calculateTotalRevenue()
     {
-        return Transaction::query()
+        if ($this->reportType === 'tickets') {
+            return Transaction::query()
+                ->where('status', 'success')
+                ->when($this->startDate, function ($query) {
+                    $query->whereDate('created_at', '>=', $this->startDate);
+                })
+                ->when($this->endDate, function ($query) {
+                    $query->whereDate('created_at', '<=', $this->endDate);
+                })
+                ->when($this->selectedFilm, function ($query) {
+                    $query->whereHas('booking.showtime.film', function ($q) {
+                        $q->where('id', $this->selectedFilm);
+                    });
+                })
+                ->sum('amount');
+        } else {
+            return \App\Models\SnackOrderItem::query()
+                ->when($this->startDate, function ($query) {
+                    $query->whereHas('snackOrder', function($q) {
+                        $q->whereDate('created_at', '>=', $this->startDate);
+                    });
+                })
+                ->when($this->endDate, function ($query) {
+                    $query->whereHas('snackOrder', function($q) {
+                        $q->whereDate('created_at', '<=', $this->endDate);
+                    });
+                })
+                ->sum(\DB::raw('price * quantity'));
+        }
+    }
+
+    public function calculateTotalCombinedRevenue()
+    {
+        $ticketsRevenue = Transaction::query()
             ->where('status', 'success')
             ->when($this->startDate, function ($query) {
                 $query->whereDate('created_at', '>=', $this->startDate);
@@ -61,12 +122,22 @@ class Index extends Component
             ->when($this->endDate, function ($query) {
                 $query->whereDate('created_at', '<=', $this->endDate);
             })
-            ->when($this->selectedFilm, function ($query) {
-                $query->whereHas('booking.showtime.film', function ($q) {
-                    $q->where('id', $this->selectedFilm);
+            ->sum('amount');
+
+        $snacksRevenue = \App\Models\SnackOrderItem::query()
+            ->when($this->startDate, function ($query) {
+                $query->whereHas('snackOrder', function($q) {
+                    $q->whereDate('created_at', '>=', $this->startDate);
                 });
             })
-            ->sum('amount');
+            ->when($this->endDate, function ($query) {
+                $query->whereHas('snackOrder', function($q) {
+                    $q->whereDate('created_at', '<=', $this->endDate);
+                });
+            })
+            ->sum(\DB::raw('price * quantity'));
+
+        return $ticketsRevenue + $snacksRevenue;
     }
 
     public function exportCsv()

@@ -67,7 +67,7 @@
 
                             <td class="px-6 py-3">
                                 <div class="flex items-center">
-                                    <div class="flex-shrink-0 w-10 h-14 shadow-md rounded overflow-hidden border border-slate-600 group-hover:border-amber-500/50 transition-colors">
+                                    <div class="flex-shrink-0 w-16 h-24 shadow-md rounded-lg overflow-hidden border border-slate-600 group-hover:border-amber-500/50 transition-colors">
                                         <img src="{{ Str::startsWith($film->poster_url, 'http') ? $film->poster_url : Storage::url($film->poster_url) }}" alt="{{ $film->title }}"
                                             class="object-cover w-full h-full">
                                     </div>

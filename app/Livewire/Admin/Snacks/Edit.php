@@ -14,6 +14,7 @@ class Edit extends Component
     public $name;
     public $type;
     public $price;
+    public $description;
     public $image;
     public $newImage;
 
@@ -23,6 +24,7 @@ class Edit extends Component
         $this->name = $snack->name;
         $this->type = $snack->type;
         $this->price = $snack->price;
+        $this->description = $snack->description;
         $this->image = $snack->image;
     }
 
@@ -32,6 +34,7 @@ class Edit extends Component
             'name' => 'required|string|max:255',
             'type' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string|max:500',
             'newImage' => 'nullable|image|max:1024', // 1MB Max
         ];
 
@@ -41,6 +44,7 @@ class Edit extends Component
             'name' => $this->name,
             'type' => $this->type,
             'price' => $this->price,
+            'description' => $this->description,
         ];
 
         if ($this->newImage) {

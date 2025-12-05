@@ -174,6 +174,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin'])->prefix('admin')->
 
     // ⚙️ Settings
     Route::get('/settings/site', \App\Livewire\Admin\Settings\SiteSettings::class)->name('settings.site');
+    Route::get('/content/featured', \App\Livewire\Admin\Content\FeaturedFilms::class)->name('content.featured');
 });
 
 //

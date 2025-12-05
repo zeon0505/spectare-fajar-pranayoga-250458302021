@@ -25,13 +25,22 @@ class Dashboard extends Component
 
     public function render()
     {
-        // Chart Data (Monthly Sales for Current Year)
-        $monthlySales = Transaction::select(
+        // Chart Data (Monthly Sales for Current Year) - Combined Tickets + Snacks
+        $monthlyTicketSales = Transaction::select(
             DB::raw('MONTH(created_at) as month'),
             DB::raw('SUM(amount) as total')
         )
             ->where('status', 'success')
             ->whereYear('created_at', Carbon::now()->year)
+            ->groupBy('month')
+            ->get();
+
+        $monthlySnackSales = \App\Models\SnackOrderItem::select(
+            DB::raw('MONTH(snack_order_items.created_at) as month'),
+            DB::raw('SUM(snack_order_items.price * snack_order_items.quantity) as total')
+        )
+            ->join('snack_orders', 'snack_order_items.snack_order_id', '=', 'snack_orders.id')
+            ->whereYear('snack_orders.created_at', Carbon::now()->year)
             ->groupBy('month')
             ->get();
 
@@ -41,8 +50,14 @@ class Dashboard extends Component
         for ($i = 1; $i <= 12; $i++) {
             $month = Carbon::create()->month($i)->format('M'); // Jan, Feb, etc.
             $labels[] = $month;
-            $sale = $monthlySales->firstWhere('month', $i);
-            $data[] = $sale ? $sale->total : 0;
+            
+            $ticketSale = $monthlyTicketSales->firstWhere('month', $i);
+            $snackSale = $monthlySnackSales->firstWhere('month', $i);
+            
+            $ticketTotal = $ticketSale ? $ticketSale->total : 0;
+            $snackTotal = $snackSale ? $snackSale->total : 0;
+            
+            $data[] = $ticketTotal + $snackTotal;
         }
 
         $chartData = [
@@ -74,10 +89,14 @@ class Dashboard extends Component
             'series' => $bookingData,
         ];
 
-        // Stats Cards Data
+        // Stats Cards Data - Combined Revenue
         $totalFilms = Film::count();
         $totalBookings = Booking::count();
-        $totalRevenue = Transaction::where('status', 'success')->sum('amount');
+        
+        $ticketRevenue = Transaction::where('status', 'success')->sum('amount');
+        $snackRevenue = \App\Models\SnackOrderItem::sum(DB::raw('price * quantity'));
+        $totalRevenue = $ticketRevenue + $snackRevenue;
+        
         $activeShows = Showtime::where('date', '>=', Carbon::today())->count();
         $nowShowingFilms = Film::with('genres')->where('status', 'Now Showing')->take(2)->get();
         $comingSoonFilms = Film::with('genres')->where('status', 'Coming Soon')->take(2)->get();

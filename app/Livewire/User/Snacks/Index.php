@@ -17,8 +17,9 @@ class Index extends Component
         ]);
     }
 
-    public function addToCart(Snack $snack)
+    public function addToCart($snackId)
     {
+        $snack = Snack::findOrFail($snackId);
         $cart = session()->get('cart', []);
 
         if (isset($cart[$snack->id])) {

@@ -49,11 +49,11 @@
                         <td class="px-6 py-4 text-center space-x-2">
                             <a href="{{ route('admin.reviews.show', $review->id) }}" class="font-medium text-blue-500 hover:underline">Detail</a>
                             @if($review->is_approved)
-                                <button wire:click="unapprove({{ $review->id }})" class="font-medium text-yellow-500 hover:underline">Batal</button>
+                                <button onclick="confirmUnapprove('{{ $review->id }}')" class="font-medium text-yellow-500 hover:underline">Batal</button>
                             @else
-                                <button wire:click="approve({{ $review->id }})" class="font-medium text-green-500 hover:underline">Setujui</button>
+                                <button onclick="confirmApprove('{{ $review->id }}')" class="font-medium text-green-500 hover:underline">Setujui</button>
                             @endif
-                            <button wire:click="delete({{ $review->id }})" class="font-medium text-red-500 hover:underline">Hapus</button>
+                            <button onclick="confirmDelete('{{ $review->id }}')" class="font-medium text-red-500 hover:underline">Hapus</button>
                         </td>
                     </tr>
                 @empty
@@ -70,4 +70,90 @@
     <div class="mt-8">
         {{ $reviews->links() }}
     </div>
+
+    <script>
+        function confirmApprove(id) {
+            Swal.fire({
+                title: 'Setujui Review?',
+                text: "Review ini akan disetujui dan ditampilkan kepada publik.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#10b981',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Setujui!',
+                cancelButtonText: 'Batal',
+                background: '#1e293b',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    @this.call('approve', id);
+                    Swal.fire({
+                        title: 'Disetujui!',
+                        text: 'Review telah disetujui.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false,
+                        background: '#1e293b',
+                        color: '#fff'
+                    });
+                }
+            });
+        }
+
+        function confirmUnapprove(id) {
+            Swal.fire({
+                title: 'Batalkan Persetujuan?',
+                text: "Review ini akan disembunyikan dari publik.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#f59e0b',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Batalkan!',
+                cancelButtonText: 'Batal',
+                background: '#1e293b',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    @this.call('unapprove', id);
+                    Swal.fire({
+                        title: 'Dibatalkan!',
+                        text: 'Persetujuan review telah dibatalkan.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false,
+                        background: '#1e293b',
+                        color: '#fff'
+                    });
+                }
+            });
+        }
+
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Hapus Review?',
+                text: "Data ini tidak dapat dikembalikan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#6b7280',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal',
+                background: '#1e293b',
+                color: '#fff'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    @this.call('delete', id);
+                    Swal.fire({
+                        title: 'Terhapus!',
+                        text: 'Review telah dihapus.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false,
+                        background: '#1e293b',
+                        color: '#fff'
+                    });
+                }
+            });
+        }
+    </script>
 </div>

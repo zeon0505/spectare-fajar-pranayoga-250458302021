@@ -13,6 +13,7 @@ class Create extends Component
     public $name;
     public $type;
     public $price;
+    public $description;
     public $image;
 
     public function save()
@@ -21,6 +22,7 @@ class Create extends Component
             'name' => 'required|string|max:255',
             'type' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
+            'description' => 'nullable|string|max:500',
             'image' => 'required|image|max:1024', // 1MB Max
         ];
 

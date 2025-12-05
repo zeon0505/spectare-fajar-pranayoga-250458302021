@@ -40,6 +40,14 @@
                 </div>
 
                 <div>
+                    <label for="description" class="block text-sm font-bold text-gray-300 mb-2">Description</label>
+                    <textarea id="description" wire:model="description" rows="3"
+                        class="w-full bg-slate-700 text-white border border-slate-600 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent placeholder-gray-500 transition-all resize-none"
+                        placeholder="e.g., A delicious treat to enjoy with your movie."></textarea>
+                    @error('description') <span class="text-red-500 text-xs mt-1">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
                     <label for="image" class="block text-sm font-bold text-gray-300 mb-2">Image</label>
                     <input type="file" id="image" wire:model="image"
                         class="w-full bg-slate-700 text-white border border-slate-600 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-amber-500 file:text-amber-950 hover:file:bg-amber-600 transition-all">

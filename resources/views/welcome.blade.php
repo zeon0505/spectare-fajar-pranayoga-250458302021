@@ -29,6 +29,7 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <style>
         body {
@@ -179,7 +180,7 @@
                 </div>
 
                 <!-- Search and Filter Form -->
-                <form action="{{ route('home') }}#now-showing" method="GET" class="mb-12" data-aos="fade-up">
+                <form action="{{ route('home') }}#now-showing" method="GET" class="mb-12 relative z-30" data-aos="fade-up">
                     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-gray-800/50 p-6 rounded-xl border border-gray-700">
                         <div class="md:col-span-2 lg:col-span-2">
                             <label for="search" class="block text-sm font-medium text-gray-300 mb-2">Search Film</label>
@@ -189,15 +190,49 @@
                         </div>
                         <div>
                             <label for="genre" class="block text-sm font-medium text-gray-300 mb-2">Genre</label>
-                            <select name="genre" id="genre"
-                                    class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 border-transparent focus:border-yellow-500 focus:ring focus:ring-yellow-500/50 transition">
-                                <option value="">All Genres</option>
-                                @foreach ($genres as $genre)
-                                    <option value="{{ $genre->id }}" {{ ($selectedGenre ?? '') == $genre->id ? 'selected' : '' }}>
-                                        {{ $genre->name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                            <div x-data="{ 
+                                open: false, 
+                                selected: '{{ $selectedGenre ?? '' }}', 
+                                selectedName: '{{ $genres->firstWhere('id', $selectedGenre ?? '')?->name ?? 'All Genres' }}' 
+                            }" class="relative">
+                                <input type="hidden" name="genre" :value="selected">
+                                
+                                <button @click="open = !open" 
+                                        @click.away="open = false"
+                                        type="button"
+                                        class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 border-transparent focus:border-yellow-500 focus:ring focus:ring-yellow-500/50 transition flex justify-between items-center">
+                                    <span x-text="selectedName" class="truncate"></span>
+                                    <svg class="w-5 h-5 text-gray-400 transition-transform duration-200" :class="{'rotate-180': open}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+
+                                <div x-show="open" 
+                                     x-transition:enter="transition ease-out duration-200 origin-top"
+                                     x-transition:enter-start="opacity-0 scale-y-0"
+                                     x-transition:enter-end="opacity-100 scale-y-100"
+                                     x-transition:leave="transition ease-in duration-150 origin-top"
+                                     x-transition:leave-start="opacity-100 scale-y-100"
+                                     x-transition:leave-end="opacity-0 scale-y-0"
+                                     class="absolute z-50 mt-2 w-full bg-gray-700 border border-gray-600 rounded-lg shadow-xl max-h-60 overflow-y-auto scroll-smooth custom-scrollbar"
+                                     style="display: none;">
+                                    
+                                    <div class="py-1">
+                                        <div @click="selected = ''; selectedName = 'All Genres'; open = false"
+                                             class="px-4 py-2 text-sm text-gray-300 hover:bg-gray-600 cursor-pointer transition-colors"
+                                             :class="selected === '' ? 'text-yellow-500 font-bold bg-gray-600/50' : ''">
+                                            All Genres
+                                        </div>
+                                        @foreach ($genres as $genre)
+                                            <div @click="selected = '{{ $genre->id }}'; selectedName = '{{ $genre->name }}'; open = false"
+                                                 class="px-4 py-2 text-sm text-gray-300 hover:bg-gray-600 cursor-pointer transition-colors"
+                                                 :class="selected == '{{ $genre->id }}' ? 'text-yellow-500 font-bold bg-gray-600/50' : ''">
+                                                {{ $genre->name }}
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="flex items-end">
                             <button type="submit" class="w-full bg-yellow-500 text-black font-bold py-2 px-4 rounded-lg hover:bg-yellow-400 transition-all duration-300 shadow-lg hover:shadow-yellow-500/30">

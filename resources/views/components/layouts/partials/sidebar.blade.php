@@ -117,6 +117,10 @@
                                 class="menu-item {{ request()->routeIs('admin.studios.*') ? 'active' : '' }} block px-4 py-2 rounded-lg transition-all duration-300 text-sm">
                                 Studios
                             </a>
+                            <a href="{{ route('admin.content.featured') }}" wire:navigate
+                                class="menu-item {{ request()->routeIs('admin.content.featured') ? 'active' : '' }} block px-4 py-2 rounded-lg transition-all duration-300 text-sm">
+                                Featured Films
+                            </a>
                         </div>
                     </div>
 

@@ -54,7 +54,8 @@
                             </span>
                         </div>
 
-                        <button wire:click="addToCart({{ $snack->id }})"
+                        <button wire:click="addToCart('{{ $snack->id }}')"
+                                onclick="flyToCart(event)"
                                 class="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-900 text-sm font-bold py-2.5 px-5 rounded-xl shadow-lg shadow-amber-500/20 transition-all transform active:scale-95 flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -70,4 +71,81 @@
     <div class="mt-12">
         {{ $snacks->links() }}
     </div>
+
+    <div class="mt-12">
+        {{ $snacks->links() }}
+    </div>
+
+    <script>
+        function flyToCart(event) {
+            const button = event.currentTarget;
+            const card = button.closest('.group');
+            const img = card.querySelector('img');
+            const cartIcon = document.querySelector('[data-cart-icon]') || document.querySelector('.cart-icon');
+            
+            if (!img || !cartIcon) return;
+            
+            // Get positions
+            const imgRect = img.getBoundingClientRect();
+            const cartRect = cartIcon.getBoundingClientRect();
+            
+            // Clone image
+            const flyingImg = img.cloneNode(true);
+            flyingImg.style.position = 'fixed';
+            flyingImg.style.left = imgRect.left + 'px';
+            flyingImg.style.top = imgRect.top + 'px';
+            flyingImg.style.width = imgRect.width + 'px';
+            flyingImg.style.height = imgRect.height + 'px';
+            flyingImg.style.borderRadius = '1rem';
+            flyingImg.style.zIndex = '9999';
+            flyingImg.style.pointerEvents = 'none';
+            flyingImg.style.transition = 'all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            flyingImg.style.objectFit = 'cover';
+            
+            document.body.appendChild(flyingImg);
+            
+            // Add bounce to original card
+            card.classList.add('animate-bounce-once');
+            setTimeout(() => card.classList.remove('animate-bounce-once'), 500);
+            
+            // Animate to cart
+            requestAnimationFrame(() => {
+                flyingImg.style.left = cartRect.left + cartRect.width/2 - 20 + 'px';
+                flyingImg.style.top = cartRect.top + cartRect.height/2 - 20 + 'px';
+                flyingImg.style.width = '40px';
+                flyingImg.style.height = '40px';
+                flyingImg.style.opacity = '0';
+                flyingImg.style.transform = 'scale(0.2) rotate(360deg)';
+            });
+            
+            // Remove after animation
+            setTimeout(() => {
+                flyingImg.remove();
+            }, 800);
+        }
+        
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('snackAdded', () => {
+                // Cart icon bounce
+                const cartIcon = document.querySelector('[data-cart-icon]') || document.querySelector('.cart-icon');
+                if (cartIcon) {
+                    cartIcon.classList.add('animate-bounce-once');
+                    setTimeout(() => cartIcon.classList.remove('animate-bounce-once'), 500);
+                }
+            });
+        });
+    </script>
+
+    <style>
+        @keyframes bounce-once {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(0.95); }
+            75% { transform: scale(1.05); }
+        }
+        
+        .animate-bounce-once {
+            animation: bounce-once 0.5s ease;
+        }
+    </style>
 </div>

@@ -36,7 +36,7 @@
 
                     <tbody class="divide-y divide-slate-800">
                         @foreach ($cartItems as $item)
-                            <tr class="hover:bg-slate-800/50 transition-colors duration-200 group">
+                            <tr wire:key="cart-item-{{ $item['snack']['id'] }}" class="hover:bg-slate-800/50 transition-colors duration-200 group">
 
                                 <td class="px-6 py-4">
                                     <div class="flex items-center">
@@ -62,7 +62,7 @@
 
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex justify-center items-center bg-slate-950 rounded-xl border border-slate-700 w-max mx-auto shadow-inner">
-                                        <button wire:click="decrementQuantity({{ $item['snack']['id'] }})"
+                                        <button wire:click="decrementQuantity('{{ $item['snack']['id'] }}')"
                                                 class="px-3 py-1.5 text-gray-400 hover:text-white hover:bg-slate-800 rounded-l-xl transition-colors focus:outline-none">
                                             <svg class="h-4 w-4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M20 12H4"></path></svg>
                                         </button>
@@ -71,7 +71,7 @@
                                             {{ $item['quantity'] }}
                                         </span>
 
-                                        <button wire:click="incrementQuantity({{ $item['snack']['id'] }})"
+                                        <button wire:click="incrementQuantity('{{ $item['snack']['id'] }}')"
                                                 class="px-3 py-1.5 text-gray-400 hover:text-white hover:bg-slate-800 rounded-r-xl transition-colors focus:outline-none">
                                             <svg class="h-4 w-4" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 4v16m8-8H4"></path></svg>
                                         </button>
@@ -85,7 +85,7 @@
                                 </td>
 
                                 <td class="px-6 py-4 whitespace-nowrap text-right">
-                                    <button wire:click="removeItem({{ $item['snack']['id'] }})"
+                                    <button wire:click="removeItem('{{ $item['snack']['id'] }}')"
                                             class="text-red-500 hover:text-red-400 font-bold text-sm transition-colors flex items-center justify-end ml-auto gap-1.5 hover:underline">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                                         Remove

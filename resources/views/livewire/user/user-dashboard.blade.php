@@ -17,6 +17,13 @@
     </style>
 
     <div class="pb-12">
+        <!-- Top Navbar/Header (Dashboard Only) -->
+        <header class="sticky top-0 z-40 bg-slate-950/80 backdrop-blur-md border-b border-white/5 px-6 py-4 mb-4">
+            <div class="max-w-3xl">
+                <livewire:components.global-search />
+            </div>
+        </header>
+
         <!-- Auto-Rotating Hero Slider -->
         @if($nowShowingFilms->isNotEmpty())
             <div class="relative w-full h-[600px] overflow-hidden" x-data="heroSlider({{ $nowShowingFilms->count() }})">
@@ -144,6 +151,71 @@
                         }
                     }
                 }
+
+                function confirmCancelBooking(bookingId) {
+                    Swal.fire({
+                        title: 'Cancel Booking?',
+                        text: "Are you sure you want to cancel this booking? This action cannot be undone.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#ef4444',
+                        cancelButtonColor: '#6b7280',
+                        confirmButtonText: 'Yes, Cancel It!',
+                        cancelButtonText: 'No, Keep It',
+                        background: '#1e293b',
+                        color: '#fff'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            @this.call('cancelBooking', bookingId);
+                        }
+                    });
+                }
+
+                function confirmCancelSnackOrder(orderId) {
+                    Swal.fire({
+                        title: 'Cancel Order?',
+                        text: "Are you sure you want to cancel this snack order? This action cannot be undone.",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#ef4444',
+                        cancelButtonColor: '#6b7280',
+                        confirmButtonText: 'Yes, Cancel It!',
+                        cancelButtonText: 'No, Keep It',
+                        background: '#1e293b',
+                        color: '#fff'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            @this.call('cancelSnackOrder', orderId);
+                        }
+                    });
+                }
+
+                // Listen for cancellation events
+                window.addEventListener('booking-cancelled', event => {
+                    Swal.fire({
+                        title: 'Cancelled!',
+                        text: 'Your booking has been cancelled successfully.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false,
+                        background: '#1e293b',
+                        color: '#fff'
+                    });
+                    setTimeout(() => location.reload(), 2000);
+                });
+
+                window.addEventListener('order-cancelled', event => {
+                    Swal.fire({
+                        title: 'Cancelled!',
+                        text: 'Your order has been cancelled successfully.',
+                        icon: 'success',
+                        timer: 2000,
+                        showConfirmButton: false,
+                        background: '#1e293b',
+                        color: '#fff'
+                    });
+                    setTimeout(() => location.reload(), 2000);
+                });
             </script>
         @endif
 
@@ -197,10 +269,20 @@
                                             <div class="bg-gradient-to-r from-amber-500 to-amber-400 h-2 rounded-full transition-all duration-1000" style="width: {{ $booking->status == 'paid' ? '100%' : '30%' }}"></div>
                                         </div>
                                         
-                                        <a href="{{ route('user.bookings.detail', $booking->id) }}" 
-                                           class="block w-full text-center py-3 bg-slate-800 hover:bg-amber-500 hover:text-slate-900 rounded-xl text-sm font-bold transition-all transform group-hover:scale-105">
-                                            View Ticket
-                                        </a>
+                                        <div class="flex gap-2">
+                                            <a href="{{ route('user.bookings.detail', $booking->id) }}" 
+                                               class="flex-1 text-center py-3 bg-slate-800 hover:bg-amber-500 hover:text-slate-900 rounded-xl text-sm font-bold transition-all transform group-hover:scale-105">
+                                                View Ticket
+                                            </a>
+                                            @if($booking->status !== 'cancelled')
+                                                <button onclick="confirmCancelBooking('{{ $booking->id }}')"
+                                                        class="px-4 py-3 bg-red-600/10 hover:bg-red-600 text-red-500 hover:text-white rounded-xl text-sm font-bold transition-all">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                    </svg>
+                                                </button>
+                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -208,6 +290,30 @@
                     </div>
                 </div>
             @endif
+
+            <!-- Age Rating Filter -->
+            <div class="flex justify-center mb-12">
+                <div class="bg-slate-900/80 backdrop-blur-sm p-1.5 rounded-xl border border-slate-800 inline-flex shadow-lg shadow-black/20">
+                    <button wire:click="$set('ageRating', 'all')"
+                            class="px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 {{ $ageRating === 'all' ? 'bg-amber-500 text-slate-900 shadow-lg shadow-amber-500/25' : 'text-gray-400 hover:text-white hover:bg-slate-800' }}">
+                        All Films
+                    </button>
+                    <button wire:click="$set('ageRating', 'kids')"
+                            class="px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center {{ $ageRating === 'kids' ? 'bg-amber-500 text-slate-900 shadow-lg shadow-amber-500/25' : 'text-gray-400 hover:text-white hover:bg-slate-800' }}">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Kids
+                    </button>
+                    <button wire:click="$set('ageRating', 'adults')"
+                            class="px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-300 flex items-center {{ $ageRating === 'adults' ? 'bg-amber-500 text-slate-900 shadow-lg shadow-amber-500/25' : 'text-gray-400 hover:text-white hover:bg-slate-800' }}">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        Adults
+                    </button>
+                </div>
+            </div>
 
             <!-- Popular Now (Now Showing) - Enhanced Grid -->
             <div class="mb-16">
