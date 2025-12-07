@@ -146,6 +146,8 @@ class UserDashboard extends Component
             'recentReviews' => $recentReviews,
             'nowShowingFilms' => $nowShowingFilms,
             'comingSoonFilms' => $comingSoonFilms,
+            'totalBookingsCount' => Booking::where('user_id', $user->id)->count(),
+            'totalSpent' => Booking::where('user_id', $user->id)->where('status', 'paid')->sum('total_price'), // Optional useful stat
         ]);
     }
 }

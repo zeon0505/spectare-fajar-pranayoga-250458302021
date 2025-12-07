@@ -133,7 +133,7 @@
                     </p>
                 </div>
 
-                <div class="mt-6 flex justify-center">
+                <div class="mt-6 flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
                     <a href="{{ route('user.bookings.index') }}" 
                        class="inline-flex items-center px-6 py-3 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-semibold rounded-xl transition-all">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -141,6 +141,17 @@
                         </svg>
                         Back to My Bookings
                     </a>
+
+                    @if($booking->canBeCancelled())
+                        <button wire:click="cancelBooking" 
+                                wire:confirm="Are you sure you want to cancel this booking? Refund will be added to your wallet."
+                                class="inline-flex items-center px-6 py-3 bg-red-600/20 hover:bg-red-600/30 border border-red-500/50 text-red-500 font-semibold rounded-xl transition-all">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Cancel Booking
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>

@@ -65,6 +65,23 @@ class Detail extends Component
         }
     }
 
+    public function cancelBooking()
+    {
+        if (!$this->booking->canBeCancelled()) {
+            session()->flash('error', 'Booking cannot be cancelled less than 1 hour before showtime.');
+            return;
+        }
+
+        try {
+            $this->booking->cancel('User Requested Cancellation');
+            $this->booking->refresh();
+            $this->paymentStatus = $this->booking->status;
+            session()->flash('success', 'Booking cancelled successfully. Refund has been processed to your wallet.');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Cancellation failed: ' . $e->getMessage());
+        }
+    }
+
     public function render()
     {
         return view('livewire.user.bookings.detail');

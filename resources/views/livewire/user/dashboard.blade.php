@@ -31,9 +31,9 @@
                     <div class="stat-card card-cinema card-hover p-6 rounded-lg">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-gray-400 text-sm mb-2">Total Bookings</p>
-                                <p class="text-3xl font-bold accent-amber">0</p>
-                                <p class="text-xs text-gray-400 mt-2">0 from last month</p>
+                                <p class="text-gray-400 text-sm mb-2">Total Tickets</p>
+                                <p class="text-3xl font-bold accent-amber">{{ $totalBookingsCount }}</p>
+                                <p class="text-xs text-gray-400 mt-2">Lifetime bookings</p>
                             </div>
                             <div class="w-12 h-12 rounded-lg bg-amber-500/20 flex items-center justify-center">
                                 <svg class="w-6 h-6 accent-amber" fill="currentColor" viewBox="0 0 24 24">
@@ -46,13 +46,15 @@
                     <div class="stat-card card-cinema card-hover p-6 rounded-lg">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-gray-400 text-sm mb-2">Revenue</p>
-                                <p class="text-3xl font-bold accent-amber">$0</p>
-                                <p class="text-xs text-gray-400 mt-2">0 from last month</p>
+                                <p class="text-gray-400 text-sm mb-2">My Balance</p>
+                                <p class="text-3xl font-bold text-green-400">Rp {{ number_format(Auth::user()->balance, 0, ',', '.') }}</p>
+                                <p class="text-xs text-gray-400 mt-2">Available for next purchase</p>
                             </div>
-                            <div class="w-12 h-12 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                                <svg class="w-6 h-6 accent-amber" fill="currentColor" viewBox="0 0 24 24">
+                            <div class="w-12 h-12 rounded-lg bg-green-500/20 flex items-center justify-center">
+                                <svg class="w-6 h-6 text-green-400" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                                    <path d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z"/> 
+                                    <!-- Use a wallet icon ideally, but using clock/custom for now. Let's stick to simple or keeping existing SVG but changing color -->
                                 </svg>
                             </div>
                         </div>

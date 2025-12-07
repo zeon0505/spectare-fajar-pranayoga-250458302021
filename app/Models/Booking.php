@@ -13,7 +13,12 @@ class Booking extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['user_id', 'showtime_id', 'booking_code', 'status', 'total_price', 'qr_code_path', 'voucher_id', 'discount_amount'];
+    protected $fillable = ['user_id', 'showtime_id', 'booking_code', 'status', 'total_price', 'qr_code_path', 'voucher_id', 'discount_amount', 'cancellation_reason', 'refunded_at', 'cancelled_at'];
+
+    protected $casts = [
+        'refunded_at' => 'datetime',
+        'cancelled_at' => 'datetime',
+    ];
 
     // Accessor for qr_code - reads SVG from storage
     public function getQrCodeAttribute()
@@ -32,6 +37,32 @@ class Booking extends Model
             Storage::disk('public')->put($path, $value);
             $this->attributes['qr_code_path'] = $path;
         }
+    }
+
+    public function canBeCancelled(): bool
+    {
+        if ($this->status !== 'confirmed' && $this->status !== 'paid') {
+            return false;
+        }
+        
+        // Check if showtime start time is more than 1 hour from now
+        return $this->showtime->start_time->gt(now()->addHour());
+    }
+
+    public function cancel(string $reason)
+    {
+        \Illuminate\Support\Facades\DB::transaction(function () use ($reason) {
+            $this->update([
+                'status' => 'cancelled',
+                'cancellation_reason' => $reason,
+                'cancelled_at' => now(),
+                'refunded_at' => now(),
+            ]);
+
+            // Refund to user wallet
+            // Assuming 100% refund for now
+            $this->user->deposit($this->total_price - $this->discount_amount);
+        });
     }
 
     public function voucher()

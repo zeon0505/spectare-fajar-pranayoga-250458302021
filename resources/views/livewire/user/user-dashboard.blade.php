@@ -222,6 +222,34 @@
         <!-- Content Container -->
         <div class="container mx-auto px-8 -mt-24 relative z-20">
             
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                <!-- Balance Card -->
+                <div class="bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-800 shadow-xl flex items-center justify-between group hover:border-green-500/50 transition-all">
+                    <div>
+                        <p class="text-gray-400 text-sm font-medium mb-1">My Wallet Balance</p>
+                        <h3 class="text-3xl font-black text-green-400 group-hover:scale-105 transition-transform origin-left">
+                            Rp {{ number_format(Auth::user()->balance, 0, ',', '.') }}
+                        </h3>
+                        <p class="text-xs text-green-500/80 mt-2 flex items-center">
+                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                            Available for bookings
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Total Bookings Card -->
+                <div class="bg-slate-900/80 backdrop-blur-md p-6 rounded-2xl border border-slate-800 shadow-xl flex items-center justify-between group hover:border-amber-500/50 transition-all">
+                    <div>
+                        <p class="text-gray-400 text-sm font-medium mb-1">Total Tickets</p>
+                        <h3 class="text-3xl font-black text-amber-500 group-hover:scale-105 transition-transform origin-left">
+                            {{ $totalBookingsCount ?? 0 }}
+                        </h3>
+                        <p class="text-xs text-amber-500/80 mt-2">Lifetime watched movies</p>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Your Bookings Section (Enhanced Horizontal Scroll) -->
             @if($recentBookings->count() > 0)
                 <div class="mb-16">

@@ -30,7 +30,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        // Add columns to bookings if not exists
+       
         if (!Schema::hasColumn('bookings', 'voucher_id')) {
             Schema::table('bookings', function (Blueprint $table) {
                 $table->uuid('voucher_id')->nullable();
@@ -38,7 +38,6 @@ return new class extends Migration
             });
         }
 
-        // Add columns to snack_orders if not exists
         if (!Schema::hasColumn('snack_orders', 'voucher_id')) {
             Schema::table('snack_orders', function (Blueprint $table) {
                 $table->uuid('voucher_id')->nullable();
@@ -46,10 +45,7 @@ return new class extends Migration
             });
         }
     }
-
-    /**
-     * Reverse the migrations.
-     */
+        
     public function down(): void
     {
         Schema::dropIfExists('vouchers');

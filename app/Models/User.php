@@ -27,8 +27,38 @@ class User extends Authenticatable
         'role',
         'is_blocked',
         'blocked_at',
+        'blocked_at',
         'blocked_by',
+        'balance',
     ];
+
+    /**
+     * Deposit amount to user's balance.
+     *
+     * @param float $amount
+     * @return void
+     */
+    public function deposit(float $amount)
+    {
+        $this->balance += $amount;
+        $this->save();
+    }
+
+    /**
+     * Withdraw amount from user's balance.
+     *
+     * @param float $amount
+     * @return bool
+     */
+    public function withdraw(float $amount)
+    {
+        if ($this->balance >= $amount) {
+            $this->balance -= $amount;
+            $this->save();
+            return true;
+        }
+        return false;
+    }
 
     /**
      * The attributes that should be hidden for serialization.
