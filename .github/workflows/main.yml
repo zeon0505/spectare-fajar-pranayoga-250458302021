@@ -15,19 +15,49 @@ jobs:
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
-      - name: 🔍 Verify Secrets
+      - name: 🔍 Verify Secrets and DNS
         run: |
+          has_error=false
+          
+          # Check FTP_SERVER
           if [ -n "${{ secrets.FTP_SERVER }}" ]; then 
             echo "FTP_SERVER is set"
+            
+            # 1. Check for Protocol Prefix
             if [[ "${{ secrets.FTP_SERVER }}" == ftp://* ]] || [[ "${{ secrets.FTP_SERVER }}" == http://* ]]; then
-              echo "::error::FTP_SERVER should NOT start with ftp:// or http://. It should be just the hostname (e.g. ftp.example.com)."
+              echo "::error::❌ FTP_SERVER salah format! Jangan gunakan awalan 'ftp://' atau 'http://'. Hanya tulis hostname atau IP (contoh: ftp.example.com)."
+              has_error=true
             fi
+            
+            # 2. Check DNS Resolution
+            echo "Testing DNS resolution for server..."
+            if ! getent hosts "${{ secrets.FTP_SERVER }}"; then
+                echo "::error::❌ Hostname tidak ditemukan (ENOTFOUND). Server tidak dapat mengenali alamat '${{ secrets.FTP_SERVER }}'. Pastikan tidak ada typo."
+                has_error=true
+            else
+                echo "✅ DNS Resolution Successful"
+            fi
+            
           else 
-            echo "::error::FTP_SERVER is NOT set" 
+            echo "::error::❌ FTP_SERVER belum diatur di Secrets!" 
+            has_error=true
           fi
           
-          if [ -n "${{ secrets.FTP_USERNAME }}" ]; then echo "FTP_USERNAME is set"; else echo "::error::FTP_USERNAME is NOT set"; fi
-          if [ -n "${{ secrets.FTP_PASSWORD }}" ]; then echo "FTP_PASSWORD is set"; else echo "::error::FTP_PASSWORD is NOT set"; fi
+          # Check Username & Password
+          if [ -z "${{ secrets.FTP_USERNAME }}" ]; then 
+             echo "::error::❌ FTP_USERNAME belum diatur!"
+             has_error=true
+          fi
+          if [ -z "${{ secrets.FTP_PASSWORD }}" ]; then 
+             echo "::error::❌ FTP_PASSWORD belum diatur!"
+             has_error=true
+          fi
+          
+          # Fail the build if any errors were found
+          if [ "$has_error" = true ]; then
+            echo "::error::⛔ Validasi gagal. Periksa pesan error di atas dan perbaiki Secrets Anda."
+            exit 1
+          fi
 
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
