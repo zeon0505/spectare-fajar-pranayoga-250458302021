@@ -15,8 +15,14 @@ jobs:
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
+      - name: 🔍 Verify Secrets
+        run: |
+          if [ -n "${{ secrets.FTP_SERVER }}" ]; then echo "FTP_SERVER is set"; else echo "FTP_SERVER is NOT set"; fi
+          if [ -n "${{ secrets.FTP_USERNAME }}" ]; then echo "FTP_USERNAME is set"; else echo "FTP_USERNAME is NOT set"; fi
+          if [ -n "${{ secrets.FTP_PASSWORD }}" ]; then echo "FTP_PASSWORD is set"; else echo "FTP_PASSWORD is NOT set"; fi
+
       - name: 📂 Sync files
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
