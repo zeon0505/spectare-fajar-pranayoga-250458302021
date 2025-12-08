@@ -11,29 +11,31 @@ jobs:
       - name: Get the latest code
         uses: actions/checkout@v2.3.2
       
-      - name: 📂 Deploy Laravel core files (outside public_html)
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /laravel_core/
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/node_modules/**
-            **/tests/**
-            **/public/**
-            **.env
-      
-      - name: 🌐 Deploy public folder to public_html
+      - name: 📂 Deploy to public_html
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: /public_html/
-          local-dir: ./public/
+          timeout: 300000
           exclude: |
             **/.git*
             **/.git*/**
+            **/node_modules/**
+            **/tests/**
+            **/storage/logs/**
+            **/storage/framework/cache/**
+            **/storage/framework/sessions/**
+            **/storage/framework/views/**
+            **.env
+            **.env.example
+            **/.editorconfig
+            **/.gitignore
+            **/.gitattributes
+            **/phpunit.xml
+            **/README.md
+            **/package.json
+            **/package-lock.json
+            **/vite.config.js
+            **/.vscode/**
