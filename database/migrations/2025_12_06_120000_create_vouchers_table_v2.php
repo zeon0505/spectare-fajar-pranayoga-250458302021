@@ -12,7 +12,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Force drop if exists to ensure clean state
+        // Drop foreign keys from related tables first
+        if (Schema::hasColumn('bookings', 'voucher_id')) {
+            Schema::table('bookings', function (Blueprint $table) {
+                $table->dropForeign(['voucher_id']);
+            });
+        }
+
+        if (Schema::hasColumn('snack_orders', 'voucher_id')) {
+            Schema::table('snack_orders', function (Blueprint $table) {
+                $table->dropForeign(['voucher_id']);
+            });
+        }
+
+        // Now safe to drop the vouchers table
         Schema::dropIfExists('vouchers');
 
         Schema::create('vouchers', function (Blueprint $table) {
@@ -35,6 +48,7 @@ return new class extends Migration
             Schema::table('bookings', function (Blueprint $table) {
                 $table->uuid('voucher_id')->nullable();
                 $table->decimal('discount_amount', 12, 2)->default(0);
+                $table->foreign('voucher_id')->references('id')->on('vouchers')->onDelete('set null');
             });
         }
 
@@ -42,6 +56,7 @@ return new class extends Migration
             Schema::table('snack_orders', function (Blueprint $table) {
                 $table->uuid('voucher_id')->nullable();
                 $table->decimal('discount_amount', 12, 2)->default(0);
+                $table->foreign('voucher_id')->references('id')->on('vouchers')->onDelete('set null');
             });
         }
     }
