@@ -18,7 +18,7 @@ class Upsert extends Component
     public $image;
     public ?string $existingImage = null;
 
-    public function mount(Studio $studio = null)
+    public function mount(?Studio $studio = null)
     {
         if ($studio?->exists) {
             $this->studio = $studio;
