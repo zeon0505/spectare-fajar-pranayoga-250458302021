@@ -190,14 +190,14 @@
                         </div>
                         <div>
                             <label for="genre" class="block text-sm font-medium text-gray-300 mb-2">Genre</label>
-                            <div x-data="{ 
-                                open: false, 
-                                selected: '{{ $selectedGenre ?? '' }}', 
-                                selectedName: '{{ $genres->firstWhere('id', $selectedGenre ?? '')?->name ?? 'All Genres' }}' 
+                            <div x-data="{
+                                open: false,
+                                selected: '{{ $selectedGenre ?? '' }}',
+                                selectedName: '{{ $genres->firstWhere('id', $selectedGenre ?? '')?->name ?? 'All Genres' }}'
                             }" class="relative">
                                 <input type="hidden" name="genre" :value="selected">
-                                
-                                <button @click="open = !open" 
+
+                                <button @click="open = !open"
                                         @click.away="open = false"
                                         type="button"
                                         class="w-full bg-gray-700 text-white rounded-lg px-4 py-2 border-transparent focus:border-yellow-500 focus:ring focus:ring-yellow-500/50 transition flex justify-between items-center">
@@ -207,7 +207,7 @@
                                     </svg>
                                 </button>
 
-                                <div x-show="open" 
+                                <div x-show="open"
                                      x-transition:enter="transition ease-out duration-200 origin-top"
                                      x-transition:enter-start="opacity-0 scale-y-0"
                                      x-transition:enter-end="opacity-100 scale-y-100"
@@ -216,7 +216,7 @@
                                      x-transition:leave-end="opacity-0 scale-y-0"
                                      class="absolute z-50 mt-2 w-full bg-gray-700 border border-gray-600 rounded-lg shadow-xl max-h-60 overflow-y-auto scroll-smooth custom-scrollbar"
                                      style="display: none;">
-                                    
+
                                     <div class="py-1">
                                         <div @click="selected = ''; selectedName = 'All Genres'; open = false"
                                              class="px-4 py-2 text-sm text-gray-300 hover:bg-gray-600 cursor-pointer transition-colors"
