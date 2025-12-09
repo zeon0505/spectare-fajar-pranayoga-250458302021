@@ -7,7 +7,6 @@ use App\Livewire\Auth\Register;
 use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\ResetPassword;
 use App\Livewire\TermsAndConditions;
-use App\Livewire\Home;
 use App\Http\Controllers\MidtransController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
