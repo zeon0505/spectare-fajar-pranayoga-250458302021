@@ -50,6 +50,9 @@ class Create extends Component
         $this->selectedSeats = $bookingDetails['seats'];
         $this->totalPrice = $bookingDetails['total_price'];
         $this->finalTotal = $this->totalPrice; // Initialize final total
+
+        // Log the poster URL for debugging
+        \Illuminate\Support\Facades\Log::info('Film Poster URL: ' . ($this->showtime->film->poster_url ?? 'N/A'));
     }
 
     public function applyVoucher()
