@@ -15,7 +15,7 @@
                     <div>
                         <h2 class="text-2xl font-semibold mb-4 border-b border-gray-700 pb-2">{{ $showtime->film->title }}</h2>
                         <div class="flex items-center mb-4">
-                            <img src="{{ $showtime->film->poster_url ? Storage::disk('public')->url($showtime->film->poster_url) : asset('path/to/your/placeholder-image.jpg') }}" alt="{{ $showtime->film->title }}" class="w-32 h-48 object-cover rounded-lg mr-4">
+                            <img src="{{ $showtime->film->poster_url ? Storage::disk('public')->url($showtime->film->poster_url) : asset('images/placeholder.jpg') }}" alt="{{ $showtime->film->title }}" class="w-32 h-48 object-cover rounded-lg mr-4">
                             <div>
                                 <p><strong>Jadwal:</strong> {{ \Carbon\Carbon::parse($showtime->date)->format('d M Y') }}, {{ \Carbon\Carbon::parse($showtime->time)->format('H:i') }}</p>
                                 <p><strong>Studio:</strong> {{ $showtime->studio->name }}</p>
@@ -35,7 +35,7 @@
                                 @endforeach
                             </div>
                             <p class="mt-2"><strong>Jumlah Tiket:</strong> {{ count($selectedSeats) }}</p>
-                            
+
                             <!-- Voucher Section -->
                             <div class="mt-4 pt-4 border-t border-gray-700">
                                 <label class="block text-sm font-medium mb-2">Kode Voucher</label>
