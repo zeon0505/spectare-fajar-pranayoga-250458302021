@@ -235,6 +235,11 @@ class Create extends Component
                     'email' => $user->email,
                 ],
                 'item_details' => $midtransItems,
+                'callbacks' => [
+                    'finish' => route('user.bookings.index'), // Redirect to user bookings after payment
+                    'error' => route('user.bookings.index'), // Redirect to user bookings on error
+                    'pending' => route('user.bookings.index'), // Redirect to user bookings on pending
+                ],
             ];
 
             // Log the parameters being sent to Midtrans
