@@ -24,7 +24,7 @@ class Create extends Component
     public $totalPrice;
     public $snapToken;
     public $filmDetails;
-    
+
     // Voucher properties
     public $voucherCode;
     public $appliedVoucher = null;
@@ -34,6 +34,8 @@ class Create extends Component
     public function mount(Showtime $showtime)
     {
         $this->showtime = $showtime->load('film.genres', 'studio');
+
+        $bookingDetails = null; // Initialize $bookingDetails here
 
         if (session()->has('booking_details')) {
             $bookingDetails = session('booking_details');
@@ -149,7 +151,7 @@ class Create extends Component
         try {
             // Use the consistently calculated total price AND applying voucher
             $baseTotal = $this->showtime->film->ticket_price * count($this->selectedSeats);
-            
+
             // Re-validate voucher in case it expired while sitting on page
             $voucherId = null;
             $discountAmount = 0;
@@ -162,11 +164,11 @@ class Create extends Component
                     $voucherId = $voucher->id;
                     $discountAmount = $this->discountAmount;
                     $finalPrice = $this->finalTotal;
-                    
+
                     // Decrement quota
                     $voucher->decrement('quota');
                 } else {
-                    // Voucher no longer valid, fallback to normal price? 
+                    // Voucher no longer valid, fallback to normal price?
                     // Or throw error? Better to throw error to inform user.
                     throw new \Exception("Voucher tidak lagi valid saat diproses.");
                 }
