@@ -245,14 +245,10 @@ class Create extends Component
                 ],
             ];
 
-            // Log the parameters being sent to Midtrans
+
             Log::info('Midtrans Params:', $midtrans_params);
 
             $snapToken = Snap::getSnapToken($midtrans_params);
-
-            // HAPUS BARIS-BARIS YANG SALAH DI BAWAH INI
-            // $transaction->payment_token = $snapToken;
-            // $transaction->save();
 
             DB::commit();
             Log::info('DB committed.');
