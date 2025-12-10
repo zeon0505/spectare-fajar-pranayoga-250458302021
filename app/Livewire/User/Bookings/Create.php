@@ -52,7 +52,7 @@ class Create extends Component
         $this->finalTotal = $this->totalPrice; // Initialize final total
 
         // Log the poster URL for debugging
-        \Illuminate\Support\Facades\Log::info('Film Poster URL: ' . ($this->showtime->film->poster_url ?? 'N/A'));
+        // \Illuminate\Support\Facades\Log::info('Film Poster URL: ' . ($this->showtime->film->poster_url ?? 'N/A'));
     }
 
     public function applyVoucher()
