@@ -48,6 +48,7 @@ Route::middleware(['auth', RoleMiddleware::class . ':admin'])->prefix('admin')->
 
     // 📊 Reports
     Route::get('/reports', Admin\Reports\Index::class)->name('reports.index');
+    Route::get('/reports/print', [App\Http\Controllers\Admin\ReportController::class, 'print'])->name('reports.print');
 
     // 👥 Users
     Route::get('/users', Admin\Users\Index::class)->name('users.index');

@@ -13,18 +13,59 @@ class StudioSeeder extends Seeder
     public function run(): void
     {
         $studios = [
-            ['name' => 'Studio 1', 'capacity' => 50],
-            ['name' => 'Studio 2', 'capacity' => 60],
-            ['name' => 'Studio 3', 'capacity' => 70],
-        ];
-
-        // A standard layout example
-        $standardLayout = [
-            "SSSS_SSSS",
-            "SSSS_SSSS",
-            "SSSSSSSSS",
-            "SSSSSSSSS",
-            "SSSSSSSSS",
+            [
+                'name' => 'Studio 1',
+                'capacity' => 64,
+                'layout' => [
+                    "SSSS_SSSS",
+                    "SSSS_SSSS",
+                    "SSSS_SSSS",
+                    "SSSS_SSSS",
+                    "SSSS_SSSS",
+                    "SSSS_SSSS",
+                    "SSSS_SSSS",
+                    "SSSS_SSSS",
+                ]
+            ],
+            [
+                'name' => 'Studio 2',
+                'capacity' => 48,
+                'layout' => [
+                    "SSS__SSS",
+                    "SSS__SSS",
+                    "SSS__SSS",
+                    "SSS__SSS",
+                    "SSSSSSSS",
+                    "SSSSSSSS",
+                ]
+            ],
+            [
+                'name' => 'Studio 3',
+                'capacity' => 81,
+                'layout' => [
+                    "SSSSSSSSS",
+                    "SSSSSSSSS",
+                    "SSSSSSSSS",
+                    "SSSSSSSSS",
+                    "SSSSSSSSS",
+                    "SSSSSSSSS",
+                    "SSSSSSSSS",
+                    "SSSSSSSSS",
+                    "SSSSSSSSS",
+                ]
+            ],
+            [
+                'name' => 'Premiere Lounge',
+                'capacity' => 24,
+                'layout' => [
+                    "SS__SS",
+                    "SS__SS",
+                    "SS__SS",
+                    "SS__SS",
+                    "SS__SS",
+                    "SS__SS",
+                ]
+            ],
         ];
 
         foreach ($studios as $studioData) {
@@ -32,7 +73,7 @@ class StudioSeeder extends Seeder
                 ['name' => $studioData['name']],
                 [
                     'capacity' => $studioData['capacity'],
-                    'layout' => $standardLayout, // Assigning the layout here
+                    'layout' => $studioData['layout'],
                 ]
             );
         }

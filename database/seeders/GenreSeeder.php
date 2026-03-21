@@ -10,15 +10,24 @@ class GenreSeeder extends Seeder
     public function run(): void
     {
         $genres = [
-            ['name' => 'Action', 'description' => 'Film penuh aksi dan pertarungan.'],
-            ['name' => 'Drama', 'description' => 'Film dengan emosi dan cerita mendalam.'],
-            ['name' => 'Comedy', 'description' => 'Film lucu dan menghibur.'],
-            ['name' => 'Horror', 'description' => 'Film menegangkan dan menyeramkan.'],
-            ['name' => 'Romance', 'description' => 'Film bertema cinta dan hubungan.'],
+            ['name' => 'Action'],
+            ['name' => 'Drama'],
+            ['name' => 'Comedy'],
+            ['name' => 'Horror'],
+            ['name' => 'Romance'],
+            ['name' => 'Sci-Fi'],
+            ['name' => 'Animation'],
+            ['name' => 'Adventure'],
+            ['name' => 'Thriller'],
+            ['name' => 'Mystery'],
+            ['name' => 'Documentary'],
+            ['name' => 'Anime'],
+            ['name' => 'Supernatural'],
+            ['name' => 'War'],
         ];
 
         foreach ($genres as $genre) {
-            Genre::create($genre);
+            Genre::updateOrCreate(['name' => $genre['name']], $genre);
         }
     }
 }

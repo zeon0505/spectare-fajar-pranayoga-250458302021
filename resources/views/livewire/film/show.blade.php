@@ -11,12 +11,12 @@
 
         <div class="p-6 sm:p-10 border-b border-slate-700 relative overflow-hidden">
             <div class="absolute inset-0 bg-slate-900 opacity-50 z-0"></div>
-            <div class="absolute inset-0 bg-cover bg-center blur-3xl opacity-20 z-0\" style=\"background-image: url(\'{{ asset(\'storage/\' . $film->poster_url) }}\')\"></div>
-            <div class=\"relative z-10 flex flex-col md:flex-row gap-8\">\n
-                <div class=\"md:w-1/3 lg:w-1/4 flex-shrink-0\">\n
-                    <div class=\"relative group\">\n
-                        <img src=\"{{ asset(\'storage/\' . $film->poster_url) }}\" alt=\"{{ $film->title }}\" class=\"w-full h-auto rounded-xl shadow-2xl border-2 border-slate-600 transform group-hover:scale-[1.02] transition-transform duration-300\">\n
-                        <div class=\"absolute inset-0 rounded-xl bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300\"></div>
+            <div class="absolute inset-0 bg-cover bg-center blur-3xl opacity-20 z-0" style="background-image: url('{{ asset('storage/' . $film->poster_url) }}')"></div>
+            <div class="relative z-10 flex flex-col md:flex-row gap-8">
+                <div class="md:w-1/3 lg:w-1/4 flex-shrink-0">
+                    <div class="relative group">
+                        <img src="{{ asset('storage/' . $film->poster_url) }}" alt="{{ $film->title }}" class="w-full h-auto rounded-xl shadow-2xl border-2 border-slate-600 transform group-hover:scale-[1.02] transition-transform duration-300">
+                        <div class="absolute inset-0 rounded-xl bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </div>
                 </div>
 
@@ -108,59 +108,67 @@
                 <svg class="w-6 h-6 mr-2 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
                 Reviews
             </h2>
-            <!-- Bagian Ulasan -->
-            <div class="p-6 sm:px-20 bg-white">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">Ulasan</h2>
-
+            
+            <div class="space-y-8">
                 <!-- Form Tambah Ulasan -->
                 @auth
-                <div class="mb-8">
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-700">
+                    <h3 class="text-lg font-bold text-white mb-4">Tulis Ulasan</h3>
                     <form wire:submit.prevent="addReview">
                         <div class="mb-4">
-                            <label for="newRating" class="block text-gray-700 text-sm font-bold mb-2">Rating:</label>
-                            <select wire:model="newRating" id="newRating" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                                <option value="5">5 Bintang</option>
-                                <option value="4">4 Bintang</option>
-                                <option value="3">3 Bintang</option>
-                                <option value="2">2 Bintang</option>
-                                <option value="1">1 Bintang</option>
+                            <label class="block text-gray-400 text-sm font-bold mb-2">Rating:</label>
+                            <select wire:model="newRating" class="bg-slate-800 text-white border border-slate-700 rounded-lg w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                                <option value="5">⭐⭐⭐⭐⭐ (5 Bintang)</option>
+                                <option value="4">⭐⭐⭐⭐ (4 Bintang)</option>
+                                <option value="3">⭐⭐⭐ (3 Bintang)</option>
+                                <option value="2">⭐⭐ (2 Bintang)</option>
+                                <option value="1">⭐ (1 Bintang)</option>
                             </select>
                         </div>
                         <div class="mb-4">
-                            <label for="newReview" class="block text-gray-700 text-sm font-bold mb-2">Ulasan Anda:</label>
-                            <textarea wire:model.defer="newReview" id="newReview" rows="4" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Tulis ulasan Anda di sini..."></textarea>
+                            <label class="block text-gray-400 text-sm font-bold mb-2">Ulasan Anda:</label>
+                            <textarea wire:model.defer="newReview" rows="4" class="bg-slate-800 text-white border border-slate-700 rounded-lg w-full py-2 px-3 focus:outline-none focus:ring-2 focus:ring-amber-500" placeholder="Apa pendapat Anda tentang film ini?"></textarea>
                             @error('newReview') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
-                        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        <button type="submit" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold py-2.5 px-6 rounded-lg transition-all transform hover:scale-105">
                             Kirim Ulasan
                         </button>
                     </form>
                 </div>
                 @else
-                <p class="mb-8 text-gray-600">Silakan <a href="{{ route('login') }}" class="text-blue-500 hover:underline">login</a> untuk menulis ulasan.</p>
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-700 text-center">
+                    <p class="text-gray-400 italic">Silakan <a href="{{ route('login') }}" class="text-amber-500 font-bold hover:underline">login</a> untuk memberikan rating dan ulasan.</p>
+                </div>
                 @endauth
 
                 <!-- Daftar Ulasan -->
-                <div class="space-y-6">
+                <div class="space-y-4">
                     @forelse ($reviews as $review)
-                        <div class="bg-gray-50 p-4 rounded-lg shadow">
-                            <div class="flex items-center mb-2">
-                                <p class="font-semibold text-gray-800">{{ $review->user->name }}</p>
-                                <span class="text-gray-500 text-sm mx-2">&bull;</span>
-                                <p class="text-gray-500 text-sm">{{ $review->review_date->format('d F Y') }}</p>
+                        <div class="bg-slate-900 p-5 rounded-xl border border-slate-800 hover:border-slate-700 transition-colors">
+                            <div class="flex justify-between items-start mb-3">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 bg-slate-700 rounded-full flex items-center justify-center text-white font-bold mr-3 border border-slate-600">
+                                        {{ substr($review->user->name, 0, 1) }}
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-white">{{ $review->user->name }}</p>
+                                        <p class="text-gray-500 text-xs">{{ $review->review_date->format('d F Y') }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex text-amber-500 text-xs">
+                                    @for ($i = 0; $i < 5; $i++)
+                                        <svg class="w-4 h-4 {{ $i < $review->rating ? 'fill-current' : 'text-slate-700' }}" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                        </svg>
+                                    @endfor
+                                </div>
                             </div>
-                            <div class="flex items-center mb-2">
-                                @for ($i = 0; $i < $review->rating; $i++)
-                                    <i class="fas fa-star text-yellow-400"></i>
-                                @endfor
-                                @for ($i = $review->rating; $i < 5; $i++)
-                                    <i class="far fa-star text-gray-400"></i>
-                                @endfor
-                            </div>
-                            <p class="text-gray-700">{{ $review->review }}</p>
+                            <p class="text-gray-300 leading-relaxed">{{ $review->review }}</p>
                         </div>
                     @empty
-                        <p class="text-gray-500">Belum ada ulasan untuk film ini.</p>
+                        <div class="text-center py-10 text-gray-500 bg-slate-900/50 rounded-xl border border-dashed border-slate-700">
+                            <p>Belum ada ulasan untuk film ini. Jadi yang pertama mengulas!</p>
+                        </div>
                     @endforelse
                 </div>
             </div>

@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             GenreSeeder::class,
             FilmSeeder::class,
-            StudioSeeder::class, // <-- Saya menambahkan ini
+            StudioSeeder::class,
+            SnackSeeder::class,
         ]);
     }
 }

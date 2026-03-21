@@ -140,6 +140,16 @@ class Index extends Component
         return $ticketsRevenue + $snacksRevenue;
     }
 
+    public function getPrintUrl()
+    {
+        return route('admin.reports.print', [
+            'startDate' => $this->startDate,
+            'endDate' => $this->endDate,
+            'reportType' => $this->reportType,
+            'selectedFilm' => $this->selectedFilm,
+        ]);
+    }
+
     public function exportCsv()
     {
         $fileName = 'sales-report-' . Carbon::now()->format('Y-m-d') . '.csv';

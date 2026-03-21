@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UserSeeder extends Seeder
 {
@@ -16,27 +15,32 @@ class UserSeeder extends Seeder
     {
         // Membuat atau memperbarui Admin
         User::updateOrCreate(
-            ['email' => 'admin@example.com'],
+            ['email' => 'admin@spectare.com'],
             [
-                'name' => 'Admin',
+                'name' => 'Admin Spectare',
                 'password' => Hash::make('password'),
                 'role' => 'admin',
+                'balance' => 1000000,
             ]
         );
 
         // Membuat atau memperbarui User biasa
         User::updateOrCreate(
-            ['email' => 'user@example.com'],
+            ['email' => 'user@spectare.com'],
             [
-                'name' => 'User',
+                'name' => 'John Doe',
                 'password' => Hash::make('password'),
                 'role' => 'user',
+                'balance' => 500000,
             ]
         );
 
-        // Membuat 10 user biasa lainnya jika belum ada
-        if (User::count() < 12) {
-            User::factory(10)->create();
+        // Membuat 10 user biasa lainnya jika total user masih sedikit
+        if (User::count() < 5) {
+            User::factory(10)->create([
+                'role' => 'user',
+                'password' => Hash::make('password'),
+            ]);
         }
     }
 }

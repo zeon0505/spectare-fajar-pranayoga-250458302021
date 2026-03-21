@@ -20,7 +20,6 @@ class Show extends Component
     public function mount(Film $film)
     {
         $this->film = $film;
-        dd($this->film->poster_url);
         $this->checkIfInWishlist();
     }
 
@@ -33,6 +32,31 @@ class Show extends Component
         } else {
             $this->isInWishlist = false;
         }
+    }
+
+    public function addReview()
+    {
+        if (!Auth::check()) {
+            return $this->redirect(route('login'), navigate: true);
+        }
+
+        $this->validate([
+            'newReview' => 'required|min:5',
+            'newRating' => 'required|integer|min:1|max:5',
+        ]);
+
+        Review::create([
+            'user_id' => Auth::id(),
+            'film_id' => $this->film->id,
+            'review' => $this->newReview,
+            'rating' => $this->newRating,
+            'review_date' => now(),
+        ]);
+
+        $this->newReview = '';
+        $this->newRating = 5;
+
+        session()->flash('message', 'Ulasan Anda telah berhasil ditambahkan.');
     }
 
     public function toggleWishlist()
@@ -61,6 +85,11 @@ class Show extends Component
 
     public function render()
     {
+        $this->reviews = Review::where('film_id', $this->film->id)
+                               ->with('user')
+                               ->latest()
+                               ->get();
+
         return view('livewire.film.show');
     }
 }
